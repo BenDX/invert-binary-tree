@@ -1,0 +1,13 @@
+{
+  "name": "invert-tree",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npm run build && node ./dist/index.js",
+    "lint": "eslint --ext .js,.ts ."
+  },
+  "devDependencies": {
+    "typescript": "^5.4.3"
+  }
+}
