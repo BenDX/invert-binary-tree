@@ -16,14 +16,12 @@ class TreeNode {
  * 反轉二元樹
  * 
  * @param root 需要反轉的二元樹
- * @returns 左右反轉過的二元樹
+ * @returns 左右反轉過的二元樹 or null
  */
 function invertTree(root: TreeNode | null): TreeNode | null {
     if (root === null) return null;
 
-    const queue: TreeNode[] = [];
-    queue.push(root);
-    console.log(queue.length);
+    const queue: TreeNode[] = [root];
     while (queue.length > 0) {
         const node = queue.shift()!;
         const temp = node.left;
@@ -32,7 +30,6 @@ function invertTree(root: TreeNode | null): TreeNode | null {
 
         if (node.left !== null) queue.push(node.left);
         if (node.right !== null) queue.push(node.right);
-        console.log(queue.length);
     }
 
     return root;
@@ -41,13 +38,12 @@ function invertTree(root: TreeNode | null): TreeNode | null {
 /**
  * 建立二元樹
  * 
- * @param nums 要建立為二元樹的數字陣列
+ * @param nums 要建立為二元樹結構的數字陣列
  * @returns 結構化後的二元樹
  */
-function buildTree(nums: Array<number>) {
-    if (nums.length === 0) {
-        return null;
-    }
+function buildTree(nums: number[]) {
+    if (nums.length === 0) return null;
+
     const root = new TreeNode(nums[0]);
     const queue: TreeNode[] = [root];
 
@@ -66,33 +62,53 @@ function buildTree(nums: Array<number>) {
     return root;
 }
 
+/**
+ * 把二元樹轉換為陣列
+ * 
+ * @param root 二元樹
+ * @returns 陣列化的二元樹
+ */
+function treeToArray(root: TreeNode | null): (number | null)[] {
+    if (root === null) return []; 
+
+    const queue: (TreeNode | null)[] = [root];
+    const decodedTree: (number | null)[] = [];
+
+    while (queue.length > 0) {
+        const node = queue.shift();
+        if (node !== null) {
+            decodedTree.push(node!.val);
+            queue.push(node!.left, node!.right);
+        } else {
+            decodedTree.push(null);
+        }
+    }
+
+    // 去除陣列尾部多餘的 null
+    while (decodedTree.length > 0 && decodedTree[decodedTree.length - 1] === null) {
+        decodedTree.pop();
+    }
+
+    return decodedTree;
+}
+
 // Test cases
 const input1 = [5, 3, 8, 1, 7, 2, 6];
 const input2 = [6, 8, 9];
 const input3 = [5, 3, 8, 1, 7, 2, 6, 100, 3, -1];
-const input4 = [];
+const input4: number[] = [];
 
-
-
-
-
-// const root1 = new TreeNode(5);
-// root1.left = new TreeNode(3);
-// root1.right = new TreeNode(8);
-// root1.left.left = new TreeNode(1);
-// root1.left.right = new TreeNode(7);
-// root1.right.left = new TreeNode(2);
-// root1.right.right = new TreeNode(6);
 const root1 = buildTree(input1);
+const root2 = buildTree(input2);
+const root3 = buildTree(input3);
+const root4 = buildTree(input4);
 
-console.log(invertTree(root1)); // Output: [5, 8, 3, 6, 2, 7, 1]
+const invert1 = invertTree(root1);
+const invert2 = invertTree(root2);
+const invert3 = invertTree(root3);
+const invert4 = invertTree(root4);
 
-// const root2 = new TreeNode(6);
-// root2.left = new TreeNode(8);
-// root2.right = new TreeNode(9);
-
-// console.log(invertTree(root2)); // Output: [6, 9, 8]
-
-// console.log('qwe');
-// let qwe = buildTree(tree3);
-
+console.log(treeToArray(invert1));
+console.log(treeToArray(invert2));
+console.log(treeToArray(invert3));
+console.log(treeToArray(invert4));
